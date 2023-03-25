@@ -28,20 +28,30 @@ contract passportNFT is ERC721, Ownable {
         // start from one
         _tokenIds.increment();
     }
-
+    // 1.get tokenId 
+    // 2.mint
+    // 3.stoarge metaData
+    // 4.add tokenId
+    // emit event
     function adminMint(
         string memory imageUri,
-        Type select
-    ) public onlyOwner returns (uint256 tokenId) {
+        Type selectType
+    ) public onlyOwner {
         uint256 newItemId = _tokenIds.current();
         _safeMint(msg.sender, newItemId);
-        tokenMetaData[newItemId] = MetaData(select, imageUri);
+        tokenMetaData[newItemId] = MetaData(selectType, imageUri);
         _tokenIds.increment();
-        tokenId = newItemId;
         emit passportNFTMinted(msg.sender, newItemId);
     }
 
     function getAdmin() public view returns (address) {
         return owner();
     }
+    function getCurrentTokenId() public view  returns (uint256) {
+        return _tokenIds.current();
+    }
+    function getTokenMetaData(uint256 tokenId) public view  returns (MetaData memory) {
+        return tokenMetaData[tokenId];
+        
+    } 
 }
